@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/haptic_feedback.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../providers/app_provider.dart';
-import '../theme/app_theme.dart';
+import 'package:habit_flow/providers/app_provider.dart';
+import 'package:habit_flow/theme/app_theme.dart';
 
 class AddHabitScreen extends StatefulWidget {
   const AddHabitScreen({super.key});
@@ -20,13 +20,12 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
   List<int> _days = [1, 2, 3, 4, 5, 6, 7];
 
   static const _emojis = [
-    '⭐', '💪', '📚', '🏃', '💧', '🧘', '🍎', '😴',
-    '✍️', '🎯', '💊', '🚴', '🎸', '🧹', '💰', '🌿',
-    '☕', '🏊', '🙏', '🎨', '📝', '🥗', '🎵', '❤️',
-    '🛁', '🧠', '📖', '🏋️', '🌅', '🦷', '🍵', '🚶',
+    '⭐','💪','📚','🏃','💧','🧘','🍎','😴',
+    '✍️','🎯','💊','🚴','🎸','🧹','💰','🌿',
+    '☕','🏊','🙏','🎨','📝','🥗','🎵','❤️',
+    '🛁','🧠','📖','🏋️','🌅','🦷','🍵','🚶',
   ];
-
-  static const _dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  static const _dayNames = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 
   @override
   void dispose() {
@@ -40,9 +39,8 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.close_rounded),
-          onPressed: () => Navigator.pop(context),
-        ),
+            icon: const Icon(Icons.close_rounded),
+            onPressed: () => Navigator.pop(context)),
         title: const Text('New Habit'),
         actions: [
           Padding(
@@ -72,11 +70,8 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // ── PREVIEW CARD ──
               _buildPreview(),
               const SizedBox(height: 26),
-
-              // ── NAME ──
               _label('Habit Name'),
               const SizedBox(height: 10),
               TextField(
@@ -86,32 +81,28 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                     fontWeight: FontWeight.w600, color: AppTheme.dark),
                 decoration: InputDecoration(
                   hintText: 'e.g. Morning Exercise',
-                  hintStyle: GoogleFonts.plusJakartaSans(color: AppTheme.grey),
+                  hintStyle:
+                      GoogleFonts.plusJakartaSans(color: AppTheme.grey),
                   prefixText: '$_emoji  ',
                   filled: true,
                   fillColor: Colors.white,
                   contentPadding: const EdgeInsets.symmetric(
                       horizontal: 16, vertical: 16),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    borderSide: BorderSide.none,
-                  ),
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide.none),
                   enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    borderSide:
-                        BorderSide(color: Colors.grey.shade200, width: 1.5),
-                  ),
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide(
+                          color: Colors.grey.shade200, width: 1.5)),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    borderSide:
-                        const BorderSide(color: AppTheme.primary, width: 2),
-                  ),
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: const BorderSide(
+                          color: AppTheme.primary, width: 2)),
                 ),
                 onChanged: (_) => setState(() {}),
               ),
               const SizedBox(height: 26),
-
-              // ── EMOJI ──
               _label('Choose Icon'),
               const SizedBox(height: 10),
               Container(
@@ -119,18 +110,17 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
-                  border:
-                      Border.all(color: Colors.grey.shade200, width: 1.5),
+                  border: Border.all(
+                      color: Colors.grey.shade200, width: 1.5),
                 ),
                 child: GridView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   gridDelegate:
                       const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 8,
-                    mainAxisSpacing: 8,
-                    crossAxisSpacing: 8,
-                  ),
+                          crossAxisCount: 8,
+                          mainAxisSpacing: 8,
+                          crossAxisSpacing: 8),
                   itemCount: _emojis.length,
                   itemBuilder: (ctx, i) {
                     final isSelected = _emojis[i] == _emoji;
@@ -147,25 +137,21 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                               : Colors.grey.shade50,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: isSelected
-                                ? Color(_color)
-                                : Colors.transparent,
-                            width: 2,
-                          ),
+                              color: isSelected
+                                  ? Color(_color)
+                                  : Colors.transparent,
+                              width: 2),
                         ),
                         child: Center(
-                          child: Text(_emojis[i],
-                              style: TextStyle(
-                                  fontSize: isSelected ? 20 : 18)),
-                        ),
+                            child: Text(_emojis[i],
+                                style: TextStyle(
+                                    fontSize: isSelected ? 20 : 18))),
                       ),
                     );
                   },
                 ),
               ),
               const SizedBox(height: 26),
-
-              // ── COLOR ──
               _label('Choose Color'),
               const SizedBox(height: 12),
               Wrap(
@@ -186,16 +172,16 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                         color: c,
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: isSelected ? Colors.white : Colors.transparent,
-                          width: 3,
-                        ),
+                            color: isSelected
+                                ? Colors.white
+                                : Colors.transparent,
+                            width: 3),
                         boxShadow: isSelected
                             ? [
                                 BoxShadow(
-                                  color: c.withOpacity(0.5),
-                                  blurRadius: 12,
-                                  spreadRadius: 2,
-                                )
+                                    color: c.withOpacity(0.5),
+                                    blurRadius: 12,
+                                    spreadRadius: 2)
                               ]
                             : [],
                       ),
@@ -208,8 +194,6 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                 }).toList(),
               ),
               const SizedBox(height: 26),
-
-              // ── REPEAT ──
               _label('Repeat'),
               const SizedBox(height: 4),
               Text('Tap to toggle days',
@@ -241,29 +225,27 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                         color: isSelected ? color : Colors.white,
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
-                          color: isSelected ? color : Colors.grey.shade200,
-                          width: 1.5,
-                        ),
+                            color: isSelected
+                                ? color
+                                : Colors.grey.shade200,
+                            width: 1.5),
                         boxShadow: isSelected
                             ? [
                                 BoxShadow(
-                                  color: color.withOpacity(0.25),
-                                  blurRadius: 8,
-                                  offset: const Offset(0, 3),
-                                )
+                                    color: color.withOpacity(0.25),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 3))
                               ]
                             : [],
                       ),
                       child: Center(
-                        child: Text(
-                          _dayNames[i],
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                            color:
-                                isSelected ? Colors.white : AppTheme.grey,
-                          ),
-                        ),
+                        child: Text(_dayNames[i],
+                            style: GoogleFonts.plusJakartaSans(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                color: isSelected
+                                    ? Colors.white
+                                    : AppTheme.grey)),
                       ),
                     ),
                   );
@@ -276,10 +258,8 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
     );
   }
 
-  // Live preview of the habit card
   Widget _buildPreview() {
-    final name =
-        _ctrl.text.trim().isEmpty ? 'Your Habit Name' : _ctrl.text.trim();
+    final name = _ctrl.text.trim().isEmpty ? 'Your Habit Name' : _ctrl.text.trim();
     final color = Color(_color);
     return Container(
       padding: const EdgeInsets.all(16),
@@ -294,11 +274,11 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
             width: 52,
             height: 52,
             decoration: BoxDecoration(
-              color: color.withOpacity(0.15),
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child:
-                Center(child: Text(_emoji, style: const TextStyle(fontSize: 24))),
+                color: color.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(14)),
+            child: Center(
+                child:
+                    Text(_emoji, style: const TextStyle(fontSize: 24))),
           ),
           const SizedBox(width: 14),
           Expanded(
@@ -312,10 +292,11 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                         color: AppTheme.dark)),
                 const SizedBox(height: 4),
                 Text(
-                  '${_days.length == 7 ? 'Every day' : '${_days.length} days/week'}',
-                  style: GoogleFonts.plusJakartaSans(
-                      fontSize: 12, color: AppTheme.grey),
-                ),
+                    _days.length == 7
+                        ? 'Every day'
+                        : '${_days.length} days/week',
+                    style: GoogleFonts.plusJakartaSans(
+                        fontSize: 12, color: AppTheme.grey)),
               ],
             ),
           ),
@@ -323,10 +304,10 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
             width: 30,
             height: 30,
             decoration: BoxDecoration(
-              color: color.withOpacity(0.15),
-              borderRadius: BorderRadius.circular(9),
-              border: Border.all(color: color.withOpacity(0.4), width: 2),
-            ),
+                color: color.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(9),
+                border:
+                    Border.all(color: color.withOpacity(0.4), width: 2)),
           ),
         ],
       ),
@@ -335,7 +316,9 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
 
   Widget _label(String text) => Text(text,
       style: GoogleFonts.plusJakartaSans(
-          fontSize: 15, fontWeight: FontWeight.w700, color: AppTheme.dark));
+          fontSize: 15,
+          fontWeight: FontWeight.w700,
+          color: AppTheme.dark));
 
   void _save() {
     if (_ctrl.text.trim().isEmpty) {
@@ -344,7 +327,8 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
             style: GoogleFonts.plusJakartaSans()),
         backgroundColor: AppTheme.danger,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ));
       return;
     }

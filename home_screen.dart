@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../providers/app_provider.dart';
-import '../theme/app_theme.dart';
-import '../widgets/habit_tile.dart';
-import '../widgets/mood_bar.dart';
+import 'package:habit_flow/providers/app_provider.dart';
+import 'package:habit_flow/theme/app_theme.dart';
+import 'package:habit_flow/widgets/habit_tile.dart';
+import 'package:habit_flow/widgets/mood_bar.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -22,30 +22,25 @@ class HomeScreen extends StatelessWidget {
     return Consumer<AppProvider>(builder: (ctx, provider, _) {
       if (provider.isLoading) {
         return const Scaffold(
-          body: Center(
-              child: CircularProgressIndicator(color: AppTheme.primary)),
-        );
+            body: Center(
+                child: CircularProgressIndicator(color: AppTheme.primary)));
       }
-
       final todaysHabits = provider.todaysHabits;
       final rate = provider.todayCompletionRate;
-      final completedCount = todaysHabits
-          .where((h) => h.isCompletedOn(DateTime.now()))
-          .length;
+      final completedCount =
+          todaysHabits.where((h) => h.isCompletedOn(DateTime.now())).length;
 
       return Scaffold(
         body: SafeArea(
           child: CustomScrollView(
             physics: const BouncingScrollPhysics(),
             slivers: [
-              // ── HEADER ──
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(22, 20, 22, 0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Greeting + date
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -69,16 +64,12 @@ class HomeScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          // Avatar / initials
                           Container(
                             width: 42,
                             height: 42,
                             decoration: BoxDecoration(
                               gradient: const LinearGradient(
-                                colors: [
-                                  AppTheme.primary,
-                                  AppTheme.primaryLight
-                                ],
+                                colors: [AppTheme.primary, AppTheme.primaryLight],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               ),
@@ -94,23 +85,14 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-
                       const SizedBox(height: 22),
-
-                      // ── PROGRESS CARD ──
                       _ProgressCard(
                           rate: rate,
                           total: todaysHabits.length,
                           completed: completedCount),
-
                       const SizedBox(height: 18),
-
-                      // ── MOOD BAR ──
                       const MoodBar(),
-
                       const SizedBox(height: 26),
-
-                      // ── TODAY'S HABITS HEADER ──
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -161,8 +143,6 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-
-              // ── HABITS LIST ──
               if (todaysHabits.isEmpty)
                 SliverToBoxAdapter(child: _EmptyState())
               else
@@ -178,7 +158,6 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-
               const SliverToBoxAdapter(child: SizedBox(height: 100)),
             ],
           ),
@@ -188,7 +167,6 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-// ── PROGRESS CARD ──
 class _ProgressCard extends StatelessWidget {
   final double rate;
   final int total;
@@ -210,10 +188,9 @@ class _ProgressCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: AppTheme.primary.withOpacity(0.35),
-            blurRadius: 24,
-            offset: const Offset(0, 10),
-          ),
+              color: AppTheme.primary.withOpacity(0.35),
+              blurRadius: 24,
+              offset: const Offset(0, 10)),
         ],
       ),
       child: Column(
@@ -231,28 +208,25 @@ class _ProgressCard extends StatelessWidget {
                             fontWeight: FontWeight.w500)),
                     const SizedBox(height: 4),
                     RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                              text: '$percent',
-                              style: GoogleFonts.plusJakartaSans(
-                                  color: Colors.white,
-                                  fontSize: 44,
-                                  fontWeight: FontWeight.w800,
-                                  height: 1)),
-                          TextSpan(
-                              text: '%',
-                              style: GoogleFonts.plusJakartaSans(
-                                  color: Colors.white60,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600)),
-                        ],
-                      ),
+                      text: TextSpan(children: [
+                        TextSpan(
+                            text: '$percent',
+                            style: GoogleFonts.plusJakartaSans(
+                                color: Colors.white,
+                                fontSize: 44,
+                                fontWeight: FontWeight.w800,
+                                height: 1)),
+                        TextSpan(
+                            text: '%',
+                            style: GoogleFonts.plusJakartaSans(
+                                color: Colors.white60,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600)),
+                      ]),
                     ),
                   ],
                 ),
               ),
-              // Stats column
               Column(
                 children: [
                   _StatBox(value: '$completed', label: 'Done'),
@@ -263,33 +237,20 @@ class _ProgressCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 18),
-          // Progress bar
           Stack(
             children: [
               Container(
-                height: 8,
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(100),
-                ),
-              ),
-              AnimatedFractionallySizedBox(
-                duration: const Duration(milliseconds: 600),
-                curve: Curves.easeOutCubic,
-                widthFactor: rate.clamp(0.0, 1.0),
-                child: Container(
                   height: 8,
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(100),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.white.withOpacity(0.5),
-                        blurRadius: 8,
-                      ),
-                    ],
-                  ),
-                ),
+                      color: Colors.white.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(100))),
+              FractionallySizedBox(
+                widthFactor: rate.clamp(0.0, 1.0),
+                child: Container(
+                    height: 8,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(100))),
               ),
             ],
           ),
@@ -332,9 +293,8 @@ class _StatBox extends StatelessWidget {
       width: 68,
       padding: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.15),
-        borderRadius: BorderRadius.circular(14),
-      ),
+          color: Colors.white.withOpacity(0.15),
+          borderRadius: BorderRadius.circular(14)),
       child: Column(
         children: [
           Text(value,
@@ -353,7 +313,6 @@ class _StatBox extends StatelessWidget {
   }
 }
 
-// ── EMPTY STATE ──
 class _EmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -366,10 +325,9 @@ class _EmptyState extends StatelessWidget {
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.04),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
-            ),
+                color: Colors.black.withOpacity(0.04),
+                blurRadius: 12,
+                offset: const Offset(0, 4)),
           ],
         ),
         child: Column(
@@ -382,12 +340,10 @@ class _EmptyState extends StatelessWidget {
                     fontWeight: FontWeight.w800,
                     color: AppTheme.dark)),
             const SizedBox(height: 8),
-            Text(
-              'Tap "Add Habit" below to start\nbuilding better daily routines.',
-              textAlign: TextAlign.center,
-              style: GoogleFonts.plusJakartaSans(
-                  fontSize: 13, color: AppTheme.grey, height: 1.6),
-            ),
+            Text('Tap + below to start\nbuilding better daily routines.',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.plusJakartaSans(
+                    fontSize: 13, color: AppTheme.grey, height: 1.6)),
           ],
         ),
       ),

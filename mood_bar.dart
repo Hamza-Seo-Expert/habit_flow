@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/haptic_feedback.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../providers/app_provider.dart';
-import '../theme/app_theme.dart';
+import 'package:habit_flow/providers/app_provider.dart';
+import 'package:habit_flow/theme/app_theme.dart';
 
 class MoodBar extends StatelessWidget {
   const MoodBar({super.key});
@@ -28,10 +28,9 @@ class MoodBar extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 12,
-                offset: const Offset(0, 4),
-              ),
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4)),
             ],
           ),
           child: Column(
@@ -81,12 +80,14 @@ class MoodBar extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 10),
                       decoration: BoxDecoration(
-                        color: isSelected ? color.withOpacity(0.12) : Colors.transparent,
+                        color: isSelected
+                            ? color.withOpacity(0.12)
+                            : Colors.transparent,
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
-                          color: isSelected ? color : Colors.transparent,
-                          width: 1.5,
-                        ),
+                            color:
+                                isSelected ? color : Colors.transparent,
+                            width: 1.5),
                       ),
                       child: Column(
                         children: [

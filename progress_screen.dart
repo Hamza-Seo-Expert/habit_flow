@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
-import '../models/habit.dart';
-import '../providers/app_provider.dart';
-import '../theme/app_theme.dart';
+import 'package:habit_flow/models/habit.dart';
+import 'package:habit_flow/providers/app_provider.dart';
+import 'package:habit_flow/theme/app_theme.dart';
 
 class ProgressScreen extends StatelessWidget {
   const ProgressScreen({super.key});
 
   static const _moodEmojis = ['😢', '😕', '😐', '😊', '🤩'];
-  static const _moodLabels = ['Awful', 'Bad', 'Okay', 'Good', 'Great'];
   static const _moodColors = [
     Color(0xFFEF4444),
     Color(0xFFF97316),
@@ -19,9 +17,6 @@ class ProgressScreen extends StatelessWidget {
     Color(0xFF5B5FEE),
   ];
   static const _dayShort = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-  static const _dayFull = [
-    'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -32,17 +27,12 @@ class ProgressScreen extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.fromLTRB(22, 8, 22, 40),
           children: [
-            // ── SUMMARY STATS ──
             _buildSummaryRow(provider),
             const SizedBox(height: 24),
-
-            // ── MOOD THIS WEEK ──
             _sectionTitle('Mood This Week'),
             const SizedBox(height: 12),
             _buildMoodWeek(provider),
             const SizedBox(height: 24),
-
-            // ── HABITS ──
             _sectionTitle('Habit Stats'),
             const SizedBox(height: 12),
             if (provider.habits.isEmpty)
@@ -50,8 +40,7 @@ class ProgressScreen extends StatelessWidget {
             else
               ...provider.habits.map((h) => Padding(
                     padding: const EdgeInsets.only(bottom: 16),
-                    child: _HabitProgressCard(
-                        habit: h, provider: provider),
+                    child: _HabitProgressCard(habit: h, provider: provider),
                   )),
           ],
         );
@@ -59,14 +48,12 @@ class ProgressScreen extends StatelessWidget {
     );
   }
 
-  // Top 3 summary boxes
   Widget _buildSummaryRow(AppProvider provider) {
     final totalHabits = provider.habits.length;
-    final totalStreaks = provider.habits.fold(
-        0, (sum, h) => sum + h.currentStreak);
-    final totalDone = provider.habits.fold(
-        0, (sum, h) => sum + h.totalCompletions);
-
+    final totalStreaks =
+        provider.habits.fold(0, (sum, h) => sum + h.currentStreak);
+    final totalDone =
+        provider.habits.fold(0, (sum, h) => sum + h.totalCompletions);
     return Row(
       children: [
         Expanded(
@@ -97,7 +84,6 @@ class ProgressScreen extends StatelessWidget {
       style: GoogleFonts.plusJakartaSans(
           fontSize: 17, fontWeight: FontWeight.w800, color: AppTheme.dark));
 
-  // 7-day mood row
   Widget _buildMoodWeek(AppProvider provider) {
     final now = DateTime.now();
     return Container(
@@ -107,10 +93,9 @@ class ProgressScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 12,
+              offset: const Offset(0, 4)),
         ],
       ),
       child: Row(
@@ -121,7 +106,6 @@ class ProgressScreen extends StatelessWidget {
               '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
           final mood = provider.moods[key];
           final isToday = i == 6;
-
           return Column(
             children: [
               Container(
@@ -148,16 +132,14 @@ class ProgressScreen extends StatelessWidget {
                   style: GoogleFonts.plusJakartaSans(
                       fontSize: 11,
                       color: isToday ? AppTheme.primary : AppTheme.grey,
-                      fontWeight: isToday ? FontWeight.w700 : FontWeight.w500)),
+                      fontWeight:
+                          isToday ? FontWeight.w700 : FontWeight.w500)),
               if (isToday)
                 Container(
-                  width: 4,
-                  height: 4,
-                  decoration: const BoxDecoration(
-                    color: AppTheme.primary,
-                    shape: BoxShape.circle,
-                  ),
-                ),
+                    width: 4,
+                    height: 4,
+                    decoration: const BoxDecoration(
+                        color: AppTheme.primary, shape: BoxShape.circle)),
             ],
           );
         }),
@@ -169,9 +151,7 @@ class ProgressScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-      ),
+          color: Colors.white, borderRadius: BorderRadius.circular(20)),
       child: Column(
         children: [
           const Text('📊', style: TextStyle(fontSize: 48)),
@@ -192,7 +172,6 @@ class ProgressScreen extends StatelessWidget {
   }
 }
 
-// ── SUMMARY BOX ──
 class _SummaryBox extends StatelessWidget {
   final String value, label, icon;
   final Color color;
@@ -211,10 +190,9 @@ class _SummaryBox extends StatelessWidget {
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 3),
-          ),
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 3)),
         ],
       ),
       child: Column(
@@ -224,21 +202,16 @@ class _SummaryBox extends StatelessWidget {
           const SizedBox(height: 8),
           Text(value,
               style: GoogleFonts.plusJakartaSans(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w800,
-                  color: AppTheme.dark)),
+                  fontSize: 24, fontWeight: FontWeight.w800, color: AppTheme.dark)),
           Text(label,
               style: GoogleFonts.plusJakartaSans(
-                  fontSize: 11,
-                  color: AppTheme.grey,
-                  fontWeight: FontWeight.w500)),
+                  fontSize: 11, color: AppTheme.grey, fontWeight: FontWeight.w500)),
         ],
       ),
     );
   }
 }
 
-// ── HABIT PROGRESS CARD ──
 class _HabitProgressCard extends StatelessWidget {
   final Habit habit;
   final AppProvider provider;
@@ -263,28 +236,25 @@ class _HabitProgressCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 12,
+              offset: const Offset(0, 4)),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ── HEADER ──
           Row(
             children: [
               Container(
                 width: 46,
                 height: 46,
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.12),
-                  borderRadius: BorderRadius.circular(13),
-                ),
+                    color: color.withOpacity(0.12),
+                    borderRadius: BorderRadius.circular(13)),
                 child: Center(
-                    child: Text(habit.emoji,
-                        style: const TextStyle(fontSize: 22))),
+                    child:
+                        Text(habit.emoji, style: const TextStyle(fontSize: 22))),
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -305,28 +275,21 @@ class _HabitProgressCard extends StatelessWidget {
                   ],
                 ),
               ),
-              // Monthly rate badge
               Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Text(
-                  '${(monthlyRate * 100).toInt()}%',
-                  style: GoogleFonts.plusJakartaSans(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w800,
-                      color: color),
-                ),
+                    color: color.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12)),
+                child: Text('${(monthlyRate * 100).toInt()}%',
+                    style: GoogleFonts.plusJakartaSans(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w800,
+                        color: color)),
               ),
             ],
           ),
-
           const SizedBox(height: 16),
-
-          // ── 7-DAY GRID ──
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(7, (i) {
@@ -334,7 +297,6 @@ class _HabitProgressCard extends StatelessWidget {
               final done = weekStats[i];
               final scheduled = habit.isScheduledFor(date);
               final isToday = i == 6;
-
               return Column(
                 children: [
                   AnimatedContainer(
@@ -377,12 +339,9 @@ class _HabitProgressCard extends StatelessWidget {
               );
             }),
           ),
-
           const SizedBox(height: 14),
           Divider(color: Colors.grey.shade100, height: 1),
           const SizedBox(height: 14),
-
-          // ── MINI STATS ──
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

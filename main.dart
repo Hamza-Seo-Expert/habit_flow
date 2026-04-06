@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'providers/app_provider.dart';
-import 'screens/home_screen.dart';
-import 'screens/all_habits_screen.dart';
-import 'screens/progress_screen.dart';
-import 'screens/add_habit_screen.dart';
-import 'theme/app_theme.dart';
+import 'package:habit_flow/providers/app_provider.dart';
+import 'package:habit_flow/screens/home_screen.dart';
+import 'package:habit_flow/screens/progress_screen.dart';
+import 'package:habit_flow/screens/add_habit_screen.dart';
+import 'package:habit_flow/theme/app_theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,7 +39,6 @@ class MainShell extends StatelessWidget {
 
   static final _screens = [
     const HomeScreen(),
-    const AllHabitsScreen(),
     const ProgressScreen(),
   ];
 
@@ -53,7 +51,6 @@ class MainShell extends StatelessWidget {
             index: provider.selectedNavIndex,
             children: _screens,
           ),
-          // FAB in center of nav bar
           floatingActionButton: FloatingActionButton(
             onPressed: () => Navigator.push(
               context,
@@ -68,8 +65,6 @@ class MainShell extends StatelessWidget {
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
-
-          // Bottom nav bar
           bottomNavigationBar: _BottomNav(
             currentIndex: provider.selectedNavIndex,
             onTap: provider.setNavIndex,
@@ -92,10 +87,9 @@ class _BottomNav extends StatelessWidget {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 20,
-            offset: const Offset(0, -4),
-          ),
+              color: Colors.black.withOpacity(0.08),
+              blurRadius: 20,
+              offset: const Offset(0, -4)),
         ],
       ),
       child: BottomAppBar(
@@ -108,21 +102,18 @@ class _BottomNav extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              // Today tab
               _NavItem(
                 icon: Icons.home_rounded,
                 label: 'Today',
                 isSelected: currentIndex == 0,
                 onTap: () => onTap(0),
               ),
-              // Spacer for FAB
               const SizedBox(width: 60),
-              // Progress tab
               _NavItem(
                 icon: Icons.bar_chart_rounded,
                 label: 'Progress',
-                isSelected: currentIndex == 2,
-                onTap: () => onTap(2),
+                isSelected: currentIndex == 1,
+                onTap: () => onTap(1),
               ),
             ],
           ),
@@ -137,12 +128,11 @@ class _NavItem extends StatelessWidget {
   final String label;
   final bool isSelected;
   final VoidCallback onTap;
-  const _NavItem({
-    required this.icon,
-    required this.label,
-    required this.isSelected,
-    required this.onTap,
-  });
+  const _NavItem(
+      {required this.icon,
+      required this.label,
+      required this.isSelected,
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -156,8 +146,9 @@ class _NavItem extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         decoration: BoxDecoration(
-          color:
-              isSelected ? AppTheme.primary.withOpacity(0.1) : Colors.transparent,
+          color: isSelected
+              ? AppTheme.primary.withOpacity(0.1)
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
