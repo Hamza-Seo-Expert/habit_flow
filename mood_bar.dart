@@ -8,7 +8,7 @@ import 'package:habit_flow/theme/app_theme.dart';
 class MoodBar extends StatelessWidget {
   const MoodBar({super.key});
 
-  static const _moods = [
+  static const List<Map<String, dynamic>> _moods = [
     {'emoji': '😢', 'label': 'Awful', 'color': Color(0xFFEF4444)},
     {'emoji': '😕', 'label': 'Bad', 'color': Color(0xFFF97316)},
     {'emoji': '😐', 'label': 'Okay', 'color': Color(0xFFEAB308)},
@@ -28,9 +28,10 @@ class MoodBar extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4)),
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
             ],
           ),
           child: Column(
@@ -39,11 +40,13 @@ class MoodBar extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('How are you feeling?',
-                      style: GoogleFonts.plusJakartaSans(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: AppTheme.dark)),
+                  Text(
+                    'How are you feeling?',
+                    style: GoogleFonts.plusJakartaSans(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: AppTheme.dark),
+                  ),
                   if (todayMood != null)
                     Container(
                       padding: const EdgeInsets.symmetric(
@@ -53,12 +56,14 @@ class MoodBar extends StatelessWidget {
                             .withOpacity(0.12),
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Text('Logged ✓',
-                          style: GoogleFonts.plusJakartaSans(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
-                              color: _moods[todayMood.mood - 1]['color']
-                                  as Color)),
+                      child: Text(
+                        'Logged ✓',
+                        style: GoogleFonts.plusJakartaSans(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: _moods[todayMood.mood - 1]['color']
+                                as Color),
+                      ),
                     ),
                 ],
               ),
@@ -85,26 +90,31 @@ class MoodBar extends StatelessWidget {
                             : Colors.transparent,
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
-                            color:
-                                isSelected ? color : Colors.transparent,
-                            width: 1.5),
+                          color: isSelected ? color : Colors.transparent,
+                          width: 1.5,
+                        ),
                       ),
                       child: Column(
                         children: [
                           AnimatedScale(
                             scale: isSelected ? 1.2 : 1.0,
                             duration: const Duration(milliseconds: 250),
-                            child: Text(mood['emoji'] as String,
-                                style: const TextStyle(fontSize: 24)),
+                            child: Text(
+                              mood['emoji'] as String,
+                              style: const TextStyle(fontSize: 24),
+                            ),
                           ),
                           const SizedBox(height: 5),
-                          Text(mood['label'] as String,
-                              style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 10,
-                                  color: isSelected ? color : AppTheme.grey,
-                                  fontWeight: isSelected
-                                      ? FontWeight.w700
-                                      : FontWeight.w500)),
+                          Text(
+                            mood['label'] as String,
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 10,
+                              color: isSelected ? color : AppTheme.grey,
+                              fontWeight: isSelected
+                                  ? FontWeight.w700
+                                  : FontWeight.w500,
+                            ),
+                          ),
                         ],
                       ),
                     ),

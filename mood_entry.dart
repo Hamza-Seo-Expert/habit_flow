@@ -5,8 +5,15 @@ class MoodEntry {
 
   MoodEntry({required this.date, required this.mood, this.note});
 
-  Map<String, dynamic> toJson() => {'date': date, 'mood': mood, 'note': note};
+  Map<String, dynamic> toJson() => {
+        'date': date,
+        'mood': mood,
+        'note': note,
+      };
 
-  factory MoodEntry.fromJson(Map<String, dynamic> json) =>
-      MoodEntry(date: json['date'], mood: json['mood'], note: json['note']);
+  factory MoodEntry.fromJson(Map<String, dynamic> json) => MoodEntry(
+        date: json['date'],
+        mood: json['mood'],
+        note: json['note'],
+      );
 }

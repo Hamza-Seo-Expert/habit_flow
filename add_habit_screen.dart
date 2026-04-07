@@ -19,13 +19,16 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
   int _color = 0xFF5B5FEE;
   List<int> _days = [1, 2, 3, 4, 5, 6, 7];
 
-  static const _emojis = [
+  static const List<String> _emojis = [
     '⭐','💪','📚','🏃','💧','🧘','🍎','😴',
     '✍️','🎯','💊','🚴','🎸','🧹','💰','🌿',
     '☕','🏊','🙏','🎨','📝','🥗','🎵','❤️',
     '🛁','🧠','📖','🏋️','🌅','🦷','🍵','🚶',
   ];
-  static const _dayNames = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
+  static const List<String> _dayNames = [
+    'Mon','Tue','Wed','Thu','Fri','Sat','Sun'
+  ];
 
   @override
   void dispose() {
@@ -39,8 +42,9 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-            icon: const Icon(Icons.close_rounded),
-            onPressed: () => Navigator.pop(context)),
+          icon: const Icon(Icons.close_rounded),
+          onPressed: () => Navigator.pop(context),
+        ),
         title: const Text('New Habit'),
         actions: [
           Padding(
@@ -52,8 +56,8 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12)),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16, vertical: 8),
               ),
               child: Text('Save',
                   style: GoogleFonts.plusJakartaSans(
@@ -81,8 +85,8 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                     fontWeight: FontWeight.w600, color: AppTheme.dark),
                 decoration: InputDecoration(
                   hintText: 'e.g. Morning Exercise',
-                  hintStyle:
-                      GoogleFonts.plusJakartaSans(color: AppTheme.grey),
+                  hintStyle: GoogleFonts.plusJakartaSans(
+                      color: AppTheme.grey),
                   prefixText: '$_emoji  ',
                   filled: true,
                   fillColor: Colors.white,
@@ -118,9 +122,10 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                   physics: const NeverScrollableScrollPhysics(),
                   gridDelegate:
                       const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 8,
-                          mainAxisSpacing: 8,
-                          crossAxisSpacing: 8),
+                    crossAxisCount: 8,
+                    mainAxisSpacing: 8,
+                    crossAxisSpacing: 8,
+                  ),
                   itemCount: _emojis.length,
                   itemBuilder: (ctx, i) {
                     final isSelected = _emojis[i] == _emoji;
@@ -143,9 +148,10 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                               width: 2),
                         ),
                         child: Center(
-                            child: Text(_emojis[i],
-                                style: TextStyle(
-                                    fontSize: isSelected ? 20 : 18))),
+                          child: Text(_emojis[i],
+                              style: TextStyle(
+                                  fontSize: isSelected ? 20 : 18)),
+                        ),
                       ),
                     );
                   },
@@ -239,13 +245,15 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                             : [],
                       ),
                       child: Center(
-                        child: Text(_dayNames[i],
-                            style: GoogleFonts.plusJakartaSans(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                                color: isSelected
-                                    ? Colors.white
-                                    : AppTheme.grey)),
+                        child: Text(
+                          _dayNames[i],
+                          style: GoogleFonts.plusJakartaSans(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              color: isSelected
+                                  ? Colors.white
+                                  : AppTheme.grey),
+                        ),
                       ),
                     ),
                   );
@@ -259,7 +267,9 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
   }
 
   Widget _buildPreview() {
-    final name = _ctrl.text.trim().isEmpty ? 'Your Habit Name' : _ctrl.text.trim();
+    final name = _ctrl.text.trim().isEmpty
+        ? 'Your Habit Name'
+        : _ctrl.text.trim();
     final color = Color(_color);
     return Container(
       padding: const EdgeInsets.all(16),
@@ -277,8 +287,8 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                 color: color.withOpacity(0.15),
                 borderRadius: BorderRadius.circular(14)),
             child: Center(
-                child:
-                    Text(_emoji, style: const TextStyle(fontSize: 24))),
+                child: Text(_emoji,
+                    style: const TextStyle(fontSize: 24))),
           ),
           const SizedBox(width: 14),
           Expanded(
@@ -327,8 +337,8 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
             style: GoogleFonts.plusJakartaSans()),
         backgroundColor: AppTheme.danger,
         behavior: SnackBarBehavior.floating,
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12)),
       ));
       return;
     }
@@ -336,7 +346,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
           name: _ctrl.text.trim(),
           emoji: _emoji,
           colorValue: _color,
-          weekDays: List.from(_days),
+          weekDays: List<int>.from(_days),
         );
     Navigator.pop(context);
   }

@@ -24,7 +24,7 @@ class _HabitTileState extends State<HabitTile>
     super.initState();
     _controller = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 150));
-    _scaleAnim = Tween(begin: 1.0, end: 0.96).animate(
+    _scaleAnim = Tween<double>(begin: 1.0, end: 0.96).animate(
         CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
@@ -38,7 +38,9 @@ class _HabitTileState extends State<HabitTile>
     await _controller.forward();
     await _controller.reverse();
     HapticFeedback.lightImpact();
-    if (mounted) context.read<AppProvider>().toggleHabit(widget.habit.id);
+    if (mounted) {
+      context.read<AppProvider>().toggleHabit(widget.habit.id);
+    }
   }
 
   @override
@@ -55,17 +57,22 @@ class _HabitTileState extends State<HabitTile>
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: 24),
         decoration: BoxDecoration(
-            color: AppTheme.danger.withOpacity(0.12),
-            borderRadius: BorderRadius.circular(20)),
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Icon(Icons.delete_outline_rounded, color: AppTheme.danger, size: 24),
-          const SizedBox(height: 4),
-          Text('Delete',
-              style: GoogleFonts.plusJakartaSans(
-                  fontSize: 11,
-                  color: AppTheme.danger,
-                  fontWeight: FontWeight.w600)),
-        ]),
+          color: AppTheme.danger.withOpacity(0.12),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.delete_outline_rounded,
+                color: AppTheme.danger, size: 24),
+            const SizedBox(height: 4),
+            Text('Delete',
+                style: GoogleFonts.plusJakartaSans(
+                    fontSize: 11,
+                    color: AppTheme.danger,
+                    fontWeight: FontWeight.w600)),
+          ],
+        ),
       ),
       confirmDismiss: (_) async {
         return await showDialog<bool>(
@@ -82,18 +89,20 @@ class _HabitTileState extends State<HabitTile>
                     color: AppTheme.grey, fontSize: 14, height: 1.5)),
             actions: [
               TextButton(
-                  onPressed: () => Navigator.pop(ctx, false),
-                  child: Text('Cancel',
-                      style: GoogleFonts.plusJakartaSans(
-                          color: AppTheme.grey,
-                          fontWeight: FontWeight.w600))),
+                onPressed: () => Navigator.pop(ctx, false),
+                child: Text('Cancel',
+                    style: GoogleFonts.plusJakartaSans(
+                        color: AppTheme.grey,
+                        fontWeight: FontWeight.w600)),
+              ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.danger,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
-                    elevation: 0),
+                  backgroundColor: AppTheme.danger,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
+                  elevation: 0,
+                ),
                 onPressed: () => Navigator.pop(ctx, true),
                 child: Text('Delete',
                     style: GoogleFonts.plusJakartaSans(
@@ -109,8 +118,8 @@ class _HabitTileState extends State<HabitTile>
           content: Text('"${habit.name}" deleted',
               style: GoogleFonts.plusJakartaSans()),
           behavior: SnackBarBehavior.floating,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12)),
           backgroundColor: AppTheme.dark,
         ));
       },
@@ -123,18 +132,21 @@ class _HabitTileState extends State<HabitTile>
             curve: Curves.easeOutCubic,
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: isCompleted ? color.withOpacity(0.06) : Colors.white,
+              color:
+                  isCompleted ? color.withOpacity(0.06) : Colors.white,
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
-                  color: isCompleted
-                      ? color.withOpacity(0.35)
-                      : Colors.transparent,
-                  width: 1.5),
+                color: isCompleted
+                    ? color.withOpacity(0.35)
+                    : Colors.transparent,
+                width: 1.5,
+              ),
               boxShadow: [
                 BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 12,
-                    offset: const Offset(0, 4)),
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
               ],
             ),
             child: Row(
@@ -144,13 +156,15 @@ class _HabitTileState extends State<HabitTile>
                   width: 52,
                   height: 52,
                   decoration: BoxDecoration(
-                      color: isCompleted
-                          ? color.withOpacity(0.18)
-                          : color.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(14)),
+                    color: isCompleted
+                        ? color.withOpacity(0.18)
+                        : color.withOpacity(0.10),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
                   child: Center(
-                      child: Text(habit.emoji,
-                          style: const TextStyle(fontSize: 24))),
+                    child: Text(habit.emoji,
+                        style: const TextStyle(fontSize: 24)),
+                  ),
                 ),
                 const SizedBox(width: 14),
                 Expanded(
@@ -179,21 +193,29 @@ class _HabitTileState extends State<HabitTile>
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 8, vertical: 3),
                               decoration: BoxDecoration(
-                                  color: Colors.orange.withOpacity(0.12),
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: Row(children: [
-                                const Text('🔥',
-                                    style: TextStyle(fontSize: 11)),
-                                const SizedBox(width: 3),
-                                Text('$streak day streak',
-                                    style: GoogleFonts.plusJakartaSans(
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.orange.shade700)),
-                              ]))
+                                color:
+                                    Colors.orange.withOpacity(0.12),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Text('🔥',
+                                      style: TextStyle(fontSize: 11)),
+                                  const SizedBox(width: 3),
+                                  Text('$streak day streak',
+                                      style: GoogleFonts.plusJakartaSans(
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w600,
+                                          color:
+                                              Colors.orange.shade700)),
+                                ],
+                              ),
+                            )
                           : Text('Start your streak today!',
                               style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 11, color: AppTheme.grey)),
+                                  fontSize: 11,
+                                  color: AppTheme.grey)),
                     ],
                   ),
                 ),
@@ -204,12 +226,15 @@ class _HabitTileState extends State<HabitTile>
                   width: 30,
                   height: 30,
                   decoration: BoxDecoration(
-                      color: isCompleted ? color : Colors.transparent,
-                      borderRadius: BorderRadius.circular(9),
-                      border: Border.all(
-                          color:
-                              isCompleted ? color : Colors.grey.shade300,
-                          width: 2)),
+                    color: isCompleted ? color : Colors.transparent,
+                    borderRadius: BorderRadius.circular(9),
+                    border: Border.all(
+                      color: isCompleted
+                          ? color
+                          : Colors.grey.shade300,
+                      width: 2,
+                    ),
+                  ),
                   child: isCompleted
                       ? const Icon(Icons.check_rounded,
                           color: Colors.white, size: 17)

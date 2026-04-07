@@ -37,9 +37,9 @@ class HabitFlowApp extends StatelessWidget {
 class MainShell extends StatelessWidget {
   const MainShell({super.key});
 
-  static final _screens = [
-    const HomeScreen(),
-    const ProgressScreen(),
+  static const List<Widget> _screens = [
+    HomeScreen(),
+    ProgressScreen(),
   ];
 
   @override
@@ -54,7 +54,8 @@ class MainShell extends StatelessWidget {
           floatingActionButton: FloatingActionButton(
             onPressed: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => const AddHabitScreen()),
+              MaterialPageRoute(
+                  builder: (_) => const AddHabitScreen()),
             ),
             backgroundColor: AppTheme.primary,
             foregroundColor: Colors.white,
@@ -78,7 +79,8 @@ class MainShell extends StatelessWidget {
 class _BottomNav extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
-  const _BottomNav({required this.currentIndex, required this.onTap});
+  const _BottomNav(
+      {required this.currentIndex, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -144,10 +146,11 @@ class _NavItem extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+        padding:
+            const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppTheme.primary.withOpacity(0.1)
+              ? AppTheme.primary.withOpacity(0.10)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
         ),
@@ -156,14 +159,18 @@ class _NavItem extends StatelessWidget {
           children: [
             Icon(icon,
                 size: 24,
-                color: isSelected ? AppTheme.primary : AppTheme.grey),
+                color:
+                    isSelected ? AppTheme.primary : AppTheme.grey),
             const SizedBox(height: 2),
             Text(label,
                 style: GoogleFonts.plusJakartaSans(
                     fontSize: 11,
-                    fontWeight:
-                        isSelected ? FontWeight.w700 : FontWeight.w500,
-                    color: isSelected ? AppTheme.primary : AppTheme.grey)),
+                    fontWeight: isSelected
+                        ? FontWeight.w700
+                        : FontWeight.w500,
+                    color: isSelected
+                        ? AppTheme.primary
+                        : AppTheme.grey)),
           ],
         ),
       ),

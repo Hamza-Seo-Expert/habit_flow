@@ -8,15 +8,18 @@ import 'package:habit_flow/theme/app_theme.dart';
 class ProgressScreen extends StatelessWidget {
   const ProgressScreen({super.key});
 
-  static const _moodEmojis = ['😢', '😕', '😐', '😊', '🤩'];
-  static const _moodColors = [
+  static const List<String> _moodEmojis = ['😢','😕','😐','😊','🤩'];
+  static const List<Color> _moodColors = [
     Color(0xFFEF4444),
     Color(0xFFF97316),
     Color(0xFFEAB308),
     Color(0xFF22C55E),
     Color(0xFF5B5FEE),
   ];
-  static const _dayShort = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+  static const List<String> _dayShort = ['M','T','W','T','F','S','S'];
+  static const List<String> _dayFull = [
+    'Mon','Tue','Wed','Thu','Fri','Sat','Sun'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +41,12 @@ class ProgressScreen extends StatelessWidget {
             if (provider.habits.isEmpty)
               _buildNoHabits()
             else
-              ...provider.habits.map((h) => Padding(
-                    padding: const EdgeInsets.only(bottom: 16),
-                    child: _HabitProgressCard(habit: h, provider: provider),
-                  )),
+              ...provider.habits.map(
+                (h) => Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: _HabitProgressCard(habit: h, provider: provider),
+                ),
+              ),
           ],
         );
       }),
@@ -51,9 +56,9 @@ class ProgressScreen extends StatelessWidget {
   Widget _buildSummaryRow(AppProvider provider) {
     final totalHabits = provider.habits.length;
     final totalStreaks =
-        provider.habits.fold(0, (sum, h) => sum + h.currentStreak);
+        provider.habits.fold<int>(0, (sum, h) => sum + h.currentStreak);
     final totalDone =
-        provider.habits.fold(0, (sum, h) => sum + h.totalCompletions);
+        provider.habits.fold<int>(0, (sum, h) => sum + h.totalCompletions);
     return Row(
       children: [
         Expanded(
@@ -123,23 +128,28 @@ class ProgressScreen extends StatelessWidget {
                 child: Center(
                   child: Text(
                     mood != null ? _moodEmojis[mood.mood - 1] : '·',
-                    style: TextStyle(fontSize: mood != null ? 20 : 16),
+                    style:
+                        TextStyle(fontSize: mood != null ? 20 : 16),
                   ),
                 ),
               ),
               const SizedBox(height: 6),
-              Text(_dayShort[date.weekday - 1],
-                  style: GoogleFonts.plusJakartaSans(
-                      fontSize: 11,
-                      color: isToday ? AppTheme.primary : AppTheme.grey,
-                      fontWeight:
-                          isToday ? FontWeight.w700 : FontWeight.w500)),
+              Text(
+                _dayShort[date.weekday - 1],
+                style: GoogleFonts.plusJakartaSans(
+                    fontSize: 11,
+                    color: isToday ? AppTheme.primary : AppTheme.grey,
+                    fontWeight: isToday
+                        ? FontWeight.w700
+                        : FontWeight.w500),
+              ),
               if (isToday)
                 Container(
                     width: 4,
                     height: 4,
                     decoration: const BoxDecoration(
-                        color: AppTheme.primary, shape: BoxShape.circle)),
+                        color: AppTheme.primary,
+                        shape: BoxShape.circle)),
             ],
           );
         }),
@@ -151,7 +161,8 @@ class ProgressScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(20)),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20)),
       child: Column(
         children: [
           const Text('📊', style: TextStyle(fontSize: 48)),
@@ -162,10 +173,12 @@ class ProgressScreen extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                   color: AppTheme.dark)),
           const SizedBox(height: 6),
-          Text('Add habits to start tracking\nyour progress here.',
-              textAlign: TextAlign.center,
-              style: GoogleFonts.plusJakartaSans(
-                  fontSize: 13, color: AppTheme.grey, height: 1.6)),
+          Text(
+            'Add habits to start tracking\nyour progress here.',
+            textAlign: TextAlign.center,
+            style: GoogleFonts.plusJakartaSans(
+                fontSize: 13, color: AppTheme.grey, height: 1.6),
+          ),
         ],
       ),
     );
@@ -202,10 +215,14 @@ class _SummaryBox extends StatelessWidget {
           const SizedBox(height: 8),
           Text(value,
               style: GoogleFonts.plusJakartaSans(
-                  fontSize: 24, fontWeight: FontWeight.w800, color: AppTheme.dark)),
+                  fontSize: 24,
+                  fontWeight: FontWeight.w800,
+                  color: AppTheme.dark)),
           Text(label,
               style: GoogleFonts.plusJakartaSans(
-                  fontSize: 11, color: AppTheme.grey, fontWeight: FontWeight.w500)),
+                  fontSize: 11,
+                  color: AppTheme.grey,
+                  fontWeight: FontWeight.w500)),
         ],
       ),
     );
@@ -215,9 +232,10 @@ class _SummaryBox extends StatelessWidget {
 class _HabitProgressCard extends StatelessWidget {
   final Habit habit;
   final AppProvider provider;
-  const _HabitProgressCard({required this.habit, required this.provider});
+  const _HabitProgressCard(
+      {required this.habit, required this.provider});
 
-  static const _dayShort = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+  static const List<String> _dayShort = ['M','T','W','T','F','S','S'];
 
   @override
   Widget build(BuildContext context) {
@@ -253,8 +271,8 @@ class _HabitProgressCard extends StatelessWidget {
                     color: color.withOpacity(0.12),
                     borderRadius: BorderRadius.circular(13)),
                 child: Center(
-                    child:
-                        Text(habit.emoji, style: const TextStyle(fontSize: 22))),
+                    child: Text(habit.emoji,
+                        style: const TextStyle(fontSize: 22))),
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -276,16 +294,18 @@ class _HabitProgressCard extends StatelessWidget {
                 ),
               ),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 10, vertical: 6),
                 decoration: BoxDecoration(
                     color: color.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(12)),
-                child: Text('${(monthlyRate * 100).toInt()}%',
-                    style: GoogleFonts.plusJakartaSans(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w800,
-                        color: color)),
+                child: Text(
+                  '${(monthlyRate * 100).toInt()}%',
+                  style: GoogleFonts.plusJakartaSans(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w800,
+                      color: color),
+                ),
               ),
             ],
           ),
@@ -312,7 +332,8 @@ class _HabitProgressCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       border: isToday
                           ? Border.all(
-                              color: done ? Colors.transparent : color,
+                              color:
+                                  done ? Colors.transparent : color,
                               width: 2)
                           : null,
                     ),
@@ -328,13 +349,15 @@ class _HabitProgressCard extends StatelessWidget {
                             : null,
                   ),
                   const SizedBox(height: 4),
-                  Text(_dayShort[date.weekday - 1],
-                      style: GoogleFonts.plusJakartaSans(
-                          fontSize: 10,
-                          color: isToday ? color : AppTheme.grey,
-                          fontWeight: isToday
-                              ? FontWeight.w700
-                              : FontWeight.w500)),
+                  Text(
+                    _dayShort[date.weekday - 1],
+                    style: GoogleFonts.plusJakartaSans(
+                        fontSize: 10,
+                        color: isToday ? color : AppTheme.grey,
+                        fontWeight: isToday
+                            ? FontWeight.w700
+                            : FontWeight.w500),
+                  ),
                 ],
               );
             }),

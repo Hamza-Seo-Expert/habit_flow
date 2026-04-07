@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
-import '../models/habit.dart';
-import '../models/mood_entry.dart';
+import 'package:habit_flow/models/habit.dart';
+import 'package:habit_flow/models/mood_entry.dart';
 
 class AppProvider extends ChangeNotifier {
   List<Habit> _habits = [];
@@ -32,7 +32,8 @@ class AppProvider extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     final hj = prefs.getString(_habitsKey);
     if (hj != null) {
-      _habits = (jsonDecode(hj) as List).map((e) => Habit.fromJson(e)).toList();
+      _habits =
+          (jsonDecode(hj) as List).map((e) => Habit.fromJson(e)).toList();
     }
     final mj = prefs.getString(_moodsKey);
     if (mj != null) {
@@ -115,7 +116,6 @@ class AppProvider extends ChangeNotifier {
         7, (i) => habit.isCompletedOn(now.subtract(Duration(days: 6 - i))));
   }
 
-  // Last 30 days completion rate (for stats)
   double getMonthlyRate(Habit habit) {
     final now = DateTime.now();
     int scheduled = 0, completed = 0;
