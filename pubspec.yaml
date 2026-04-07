@@ -1,24 +1,12 @@
-name: habit_flow
-description: HabitFlow - Habit Tracker & Daily Planner
-publish_to: 'none'
-version: 1.0.0+1
-
-environment:
-  sdk: '>=3.0.0 <4.0.0'
-
-dependencies:
-  flutter:
-    sdk: flutter
-  provider: ^6.1.2
-  shared_preferences: ^2.2.3
-  google_fonts: ^6.2.1
-  uuid: ^4.3.3
-  intl: ^0.19.0
-
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_lints: ^3.0.0
-
-flutter:
-  uses-material-design: true
+pubspec.yaml          ← root
+lib/
+  main.dart
+  models/habit.dart
+  models/mood_entry.dart
+  providers/app_provider.dart
+  theme/app_theme.dart
+  widgets/habit_tile.dart
+  widgets/mood_bar.dart
+  screens/home_screen.dart
+  screens/add_habit_screen.dart
+  screens/progress_screen.dart
